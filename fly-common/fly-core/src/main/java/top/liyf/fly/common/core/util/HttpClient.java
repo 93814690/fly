@@ -2,15 +2,12 @@ package top.liyf.fly.common.core.util;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HeaderElement;
-import org.apache.http.HeaderElementIterator;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicHeaderElementIterator;
-import org.apache.http.protocol.HTTP;
 
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -50,23 +47,7 @@ public class HttpClient {
         builder.setConnectionManager(manager);
         builder.setDefaultRequestConfig(requestConfig);
         // 保持长连接配置
-        builder.setKeepAliveStrategy((response, context) -> {
-            // Honor 'keep-alive' header
-            HeaderElementIterator it = new BasicHeaderElementIterator(
-                    response.headerIterator(HTTP.CONN_KEEP_ALIVE));
-            while (it.hasNext()) {
-                HeaderElement he = it.nextElement();
-                String param = he.getName();
-                String value = he.getValue();
-                if (value != null && param.equalsIgnoreCase("timeout")) {
-                    try {
-                        return Long.parseLong(value) * 1000;
-                    } catch (NumberFormatException ignore) {
-                    }
-                }
-            }
-            return 10 * 1000;
-        });
+        builder.setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy());
 
         this.httpclient = builder.build();
 

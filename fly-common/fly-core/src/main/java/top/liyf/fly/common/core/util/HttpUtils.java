@@ -61,8 +61,7 @@ public class HttpUtils {
         }
 
         long end = System.currentTimeMillis();
-        log.info("used time: " + (end - start));
-        log.info("result: " + httpClientResult);
+        log.info("used time: " + (end - start) + " ms");
         if (httpClientResult.getCode() != 200) {
             throw new BusinessException(ResultCode.NET_ERROR);
         }
