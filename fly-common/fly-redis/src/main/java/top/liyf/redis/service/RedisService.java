@@ -53,6 +53,102 @@ public class RedisService {
         return redisTemplate.opsForValue().get(realKey);
     }
 
+    /**
+     * 功能描述: 将一个值 value 插入到列表 key 的表头
+     *
+     * @param key
+     * @param value
+     * @author liyf
+     */
+    public void lPushString(String key, String value) {
+        String realKey = getRealKey(key);
+        stringTemplate.opsForList().leftPush(realKey, value);
+    }
+
+    /**
+     * 功能描述: 移除并返回列表 key 的尾元素
+     *
+     * @param key
+     * @return java.lang.String
+     * @author liyf
+     */
+    public String rPopString(String key) {
+        String realKey = getRealKey(key);
+        return stringTemplate.opsForList().rightPop(realKey);
+    }
+
+    /**
+     * 功能描述: 将一个值 value 插入到列表 key 的表头
+     *
+     * @param key
+     * @param value
+     * @author liyf
+     */
+    public void lPush(String key, Object value) {
+        String realKey = getRealKey(key);
+        redisTemplate.opsForList().leftPush(realKey, value);
+    }
+
+    /**
+     * 功能描述: 移除并返回列表 key 的尾元素
+     * 
+     * @param key
+     * @return java.lang.Object
+     * @author liyf
+     */
+    public Object rPop(String key) {
+        String realKey = getRealKey(key);
+        return redisTemplate.opsForList().rightPop(realKey);
+    }
+
+    /**
+     * 功能描述: 将一个值 value 插入到列表 key 的表尾(最右边)
+     * 
+     * @param key
+     * @param value
+     * @author liyf
+     */
+    public void rPushString(String key, String value) {
+        String realKey = getRealKey(key);
+        stringTemplate.opsForList().rightPush(realKey, value);
+    }
+
+    /**
+     * 功能描述: 移除并返回列表 key 的头元素
+     * 
+     * @param key
+     * @return java.lang.String
+     * @author liyf
+     */
+    public String lPopString(String key) {
+        String realKey = getRealKey(key);
+        return stringTemplate.opsForList().leftPop(realKey);
+    }
+
+    /**
+     * 功能描述: 将一个值 value 插入到列表 key 的表尾(最右边)
+     *
+     * @param key
+     * @param value
+     * @author liyf
+     */
+    public void rPush(String key, Object value) {
+        String realKey = getRealKey(key);
+        redisTemplate.opsForList().rightPush(realKey, value);
+    }
+
+    /**
+     * 功能描述: 移除并返回列表 key 的头元素
+     *
+     * @param key
+     * @return java.lang.Object
+     * @author liyf
+     */
+    public Object lPop(String key) {
+        String realKey = getRealKey(key);
+        return redisTemplate.opsForList().leftPop(realKey);
+    }
+
 
     private String getRealKey(String key) {
         return applicationName + ":" + key;
