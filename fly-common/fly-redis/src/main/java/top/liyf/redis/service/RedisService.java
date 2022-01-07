@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -284,6 +285,57 @@ public class RedisService {
         String realKey2 = getRealKey(key2);
         return stringTemplate.opsForSet().difference(realKey1, realKey2);
     }
+
+    /**
+     * 功能描述: 移除并返回集合中的一个随机元素
+     * 
+     * @param key key
+     * @return java.lang.Object
+     * @author liyf
+     */
+    public Object sPop(String key) {
+        String realKey = getRealKey(key);
+        return redisTemplate.opsForSet().pop(realKey);
+    }
+
+    /**
+     * 功能描述: 移除并返回集合中的多个随机元素
+     * 
+     * @param key key
+     * @param count
+     * @return java.lang.Object
+     * @author liyf
+     */
+    public List<Object> sPop(String key, long count) {
+        String realKey = getRealKey(key);
+        return redisTemplate.opsForSet().pop(realKey, count);
+    }
+
+    /**
+     * 功能描述: 移除并返回集合中的一个随机元素
+     *
+     * @param key
+     * @return java.lang.String
+     * @author liyf
+     */
+    public String sPopString(String key) {
+        String realKey = getRealKey(key);
+        return stringTemplate.opsForSet().pop(realKey);
+    }
+
+    /**
+     * 功能描述: 移除并返回集合中的一个随机元素
+     *
+     * @param key
+     * @param count
+     * @return java.util.List<java.lang.String>
+     * @author liyf
+     */
+    public List<String> sPopString(String key, long count) {
+        String realKey = getRealKey(key);
+        return stringTemplate.opsForSet().pop(realKey, count);
+    }
+
 
     private String getRealKey(String key) {
         return applicationName + ":" + key;
